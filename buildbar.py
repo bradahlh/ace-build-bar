@@ -9,11 +9,15 @@ dirs = next(os.walk("projects"))[1]
 # Concatenate all 'projects' folders to string
 folders = ' '.join(dirs)
 
-# env = {sys.argv[1]}
-env = 'qa'
+# Get environment from CLI argument
+env_arg = sys.argv[1]
+valid_envs = ['local', 'test', 'qa', 'prod']
+if env_arg in valid_envs:
+    command = f'cmd /k "ace & mqsipackagebar -w projects -a {root_app_name}.{env_arg}.bar -k {folders}"'
+else:
+    print('Invalid argument - exiting script...')
+    sys.exit()
 
-command = f'cmd /k "ace & mqsipackagebar -w projects -a {root_app_name}.{env}.bar -k {folders}"'
+print(command)
 
-# print(command)
-
-os.system(command)
+# os.system(command)

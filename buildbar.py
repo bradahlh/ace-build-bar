@@ -9,10 +9,11 @@ dirs = next(os.walk("projects"))[1]
 # Concatenate all 'projects' folders to string
 folders = ' '.join(dirs)
 
-env = {sys.argv[1]}
+# env = {sys.argv[1]}
+env = 'qa'
 
-command = 'cmd /k "ace & mqsipackagebar -w projects -a ' + root_app_name + '.' + env + '.bar -k ' + folders + '"'
+command = f'cmd /k "ace & mqsipackagebar -w projects -a {root_app_name}.{env}.bar -k {folders}"'
 
-print(command)
+# print(command)
 
 os.system(command)

@@ -1,5 +1,12 @@
 import os, sys
 
+def argument_is_valid(env_arg):
+    valid_envs = ['local', 'test', 'qa', 'prod']
+    if env_arg in valid_envs:
+        return True
+    else:
+        return False
+
 # Store root folder name
 root_app_name = os.path.basename(os.getcwd())
 
@@ -11,11 +18,10 @@ folders = ' '.join(dirs)
 
 # Get environment from CLI argument
 env_arg = sys.argv[1]
-valid_envs = ['local', 'test', 'qa', 'prod']
-if env_arg in valid_envs:
+if argument_is_valid(env_arg):
     command = f'cmd /k "ace & mqsipackagebar -w projects -a {root_app_name}.{env_arg}.bar -k {folders}"'
 else:
-    print('Invalid argument - exiting script...')
+    print(f'Invalid argument "{env_arg}" - exiting script...')
     sys.exit()
 
 print(command)

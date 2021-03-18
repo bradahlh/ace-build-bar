@@ -1,13 +1,7 @@
-import os, sys, fnmatch
-
-def argument_is_valid(env_arg):
-    if env_arg in valid_envs:
-        return True
-    else:
-        return False
+import os, sys
 
 # Store root folder name
-root_app_name = os.path.basename(os.getcwd())
+git_repo_name = os.path.basename(os.getcwd())
 
 # Store all folder names in 'projects' in list and concat to string
 dirs = next(os.walk("projects"))[1]
@@ -20,9 +14,9 @@ if len(sys.argv) >= 2:
 else:
     env_arg = input(f'Choose one of the following environments ({valid_envs}): ')
 
-if argument_is_valid(env_arg):
-    bar_filename = f'{root_app_name}.{env_arg}.bar'
-    override_file = f'config/{env_arg}/baroverides/{root_app_name}.{env_arg}.properties'
+if env_arg in valid_envs:
+    bar_filename = f'{git_repo_name}.{env_arg}.bar'
+    override_file = f'config/{env_arg}/baroverides/{git_repo_name}.{env_arg}.properties'
 
     command = (
         f'cmd /k "'
@@ -35,7 +29,5 @@ if argument_is_valid(env_arg):
 else:
     print(f'Invalid argument "{env_arg}" - exiting script...')
     sys.exit()
-
-# print(command)
 
 os.system(command)

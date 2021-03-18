@@ -1,7 +1,6 @@
 import os, sys, fnmatch
 
 def argument_is_valid(env_arg):
-    valid_envs = ['local', 'test', 'qa', 'prod']
     if env_arg in valid_envs:
         return True
     else:
@@ -10,19 +9,20 @@ def argument_is_valid(env_arg):
 # Store root folder name
 root_app_name = os.path.basename(os.getcwd())
 
-# Store all folder names in 'projects' in list
+# Store all folder names in 'projects' in list and concat to string
 dirs = next(os.walk("projects"))[1]
-
-# Concatenate all 'projects' folders to string
 folders = ' '.join(dirs)
 
 # Get environment from CLI argument
-env_arg = sys.argv[1]
+valid_envs = ['local', 'test', 'qa', 'prod']
+if len(sys.argv) >= 2:
+    env_arg = sys.argv[1]
+else:
+    env_arg = input(f'Choose one of the following environments ({valid_envs}): ')
+
 if argument_is_valid(env_arg):
     bar_filename = f'{root_app_name}.{env_arg}.bar'
     override_file = f'config/{env_arg}/baroverides/{root_app_name}.{env_arg}.properties'
-
-    print(override_file)
 
     command = (
         f'cmd /k "'

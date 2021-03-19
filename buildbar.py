@@ -1,14 +1,19 @@
 import os, sys
+from pathlib import Path
 
 # Store root folder name
-git_repo_name = os.path.basename(os.getcwd())
+root = Path.cwd()
+git_repo_name = Path.cwd().name
 
 # Store all folder names in 'projects' in list and concat to string
-dirs = next(os.walk("projects"))[1]
-folders = ' '.join(dirs)
+# dirs = next(os.walk("projects"))[1]
+folders = [folder for folder in root.glob('projects/*') if folder.is_dir()]
+folders_string = ' '.join(folder.name for folder in folders)
+
+print("Folders string: " + folders_string)
 
 # Get environment from CLI argument
-valid_envs = ['local', 'test', 'qa', 'prod']
+valid_envs = ['readyapi', 'local', 'test', 'qa', 'prod']
 if len(sys.argv) >= 2:
     env_arg = sys.argv[1]
 else:
@@ -21,8 +26,8 @@ if env_arg in valid_envs:
     command = (
         f'cmd /k "'
         f'ace & '
-        f'mqsipackagebar -w projects -a {bar_filename} -k {folders} & '
-        f'mqsiapplybaroverride -b {bar_filename} -p {override_file} -k {folders} & '
+        f'mqsipackagebar -w projects -a {bar_filename} -k {folders_string} & '
+        f'mqsiapplybaroverride -b {bar_filename} -p {override_file} -k {folders_string} & '
         f'move {bar_filename} config/{env_arg}/bars'
         f'"'
     )

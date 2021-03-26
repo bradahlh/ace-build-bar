@@ -23,11 +23,17 @@ if env_arg in valid_envs:
     bar_filename = f'{git_repo_name}.{env_arg}.bar'
     override_file = f'config/{env_arg}/baroverides/{git_repo_name}.{env_arg}.properties'
 
+    mqsipackagebar_cmd = f'mqsipackagebar -w projects -a {bar_filename} -k {folders_string} & '
+    mqsiapplybaroverride_cmd = f'mqsiapplybaroverride -b {bar_filename} -p {override_file} -r & '
+
+    print(f'Run: {mqsipackagebar_cmd}')
+    print(f'Run: {mqsiapplybaroverride_cmd}')
+
     command = (
         f'cmd /k "'
         f'ace & '
-        f'mqsipackagebar -w projects -a {bar_filename} -k {folders_string} & '
-        f'mqsiapplybaroverride -b {bar_filename} -p {override_file} -k {folders_string} & '
+        f'{mqsipackagebar_cmd}'
+        f'{mqsiapplybaroverride_cmd}'
         f'move {bar_filename} config/{env_arg}/bars'
         f'"'
     )
